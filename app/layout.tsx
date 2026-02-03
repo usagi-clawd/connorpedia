@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import WikiHeader from './components/WikiHeader'
 
 export const metadata: Metadata = {
   title: 'Connorpedia',
@@ -15,11 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div className="mw-page-container">
-          <header className="mw-header">
-            <div className="mw-header-container">
-              <a href="/" className="mw-logo">Connorpedia</a>
-            </div>
-          </header>
+          <WikiHeader />
           {children}
         </div>
       </body>
