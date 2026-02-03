@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import SidebarTableOfContents from './SidebarTableOfContents';
 
 export default function WikiSidebar() {
   const [navigationOpen, setNavigationOpen] = useState(true);
@@ -8,6 +9,12 @@ export default function WikiSidebar() {
 
   return (
     <aside className="mw-sidebar">
+      {/* Table of Contents - Main feature at top */}
+      <SidebarTableOfContents />
+
+      {/* Separator */}
+      <div className="sidebar-separator" />
+
       {/* Navigation Section */}
       <nav className="sidebar-section">
         <h3 

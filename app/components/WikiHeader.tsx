@@ -8,9 +8,8 @@ export default function WikiHeader() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Navigate to search results or article
-      const slug = searchQuery.toLowerCase().replace(/\s+/g, '-');
-      window.location.href = `/wiki/${slug}`;
+      // Navigate to search results page
+      window.location.href = `/wiki/Special:Search?q=${encodeURIComponent(searchQuery)}`;
     }
   };
 

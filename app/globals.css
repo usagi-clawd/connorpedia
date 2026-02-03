@@ -161,8 +161,92 @@ a:active {
 }
 
 .mw-sidebar {
-  flex: 0 0 180px;
+  flex: 0 0 220px;
   font-size: var(--font-size-small);
+  position: sticky;
+  top: 80px;
+  align-self: flex-start;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+/* Sidebar TOC - Modern Vector 2022 style */
+.sidebar-toc {
+  background-color: var(--background-color-neutral-subtle);
+  border: 1px solid var(--border-color-subtle);
+  border-radius: 2px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.sidebar-toc-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  color: var(--color-base);
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-toc-title::before {
+  content: '▼';
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+
+.sidebar-toc.collapsed .sidebar-toc-title::before {
+  transform: rotate(-90deg);
+}
+
+.sidebar-toc-content {
+  font-size: var(--font-size-small);
+}
+
+.sidebar-toc-content .vector-toc-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.sidebar-toc-content .vector-toc-list .vector-toc-list {
+  padding-left: 1rem;
+  margin-top: 0.25rem;
+}
+
+.sidebar-toc-content .vector-toc-list-item {
+  margin: 0.4rem 0;
+  line-height: 1.4;
+}
+
+.sidebar-toc-content .vector-toc-list-item a {
+  color: var(--color-link);
+  text-decoration: none;
+  display: block;
+  padding: 0.25rem 0;
+  border-radius: 2px;
+  transition: background-color 0.15s;
+}
+
+.sidebar-toc-content .vector-toc-list-item a:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+  text-decoration: none;
+}
+
+.sidebar-toc-content .vector-toc-list-item a.active {
+  font-weight: 600;
+  color: var(--color-base);
+  background-color: rgba(51, 102, 204, 0.1);
+}
+
+/* Separator between TOC and nav */
+.sidebar-separator {
+  height: 1px;
+  background-color: var(--border-color-base);
+  margin: 1rem 0 1.25rem 0;
 }
 
 .sidebar-section {
@@ -509,7 +593,7 @@ a:active {
   border: 1px solid var(--border-color-subtle);
   float: right;
   width: 280px;
-  margin: 0 0 1em 1em;
+  margin: 0 0 1rem 1.5rem;
   font-size: var(--font-size-small);
   clear: right;
 }
@@ -586,63 +670,9 @@ a:active {
   text-decoration: underline;
 }
 
-/* Table of Contents */
+/* Table of Contents - Legacy inline (deprecated, now in sidebar) */
 .toc-container {
-  background-color: var(--background-color-neutral-subtle);
-  border: 1px solid var(--border-color-subtle);
-  padding: 1rem;
-  margin: 1rem 0 1.5rem 0;
-  font-size: var(--font-size-small);
-  display: inline-block;
-  min-width: 250px;
-}
-
-.toc-title {
-  font-weight: bold;
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
-  cursor: pointer;
-  user-select: none;
-}
-
-.toc-title::before {
-  content: '▼ ';
-  display: inline-block;
-  margin-right: 0.25rem;
-  transition: transform 0.2s;
-}
-
-.toc-container.collapsed .toc-title::before {
-  transform: rotate(-90deg);
-}
-
-.toc-container.collapsed .toc-content {
-  display: none;
-}
-
-.vector-toc-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-.vector-toc-list .vector-toc-list {
-  padding-left: 1.5rem;
-  margin-top: 0.25rem;
-}
-
-.vector-toc-list-item {
-  margin: 0.35rem 0;
-  line-height: 1.4;
-}
-
-.vector-toc-list-item a {
-  color: var(--color-link);
-  text-decoration: none;
-}
-
-.vector-toc-list-item a:hover {
-  text-decoration: underline;
+  display: none; /* Hidden - TOC now lives in sidebar */
 }
 
 /* Footer */
@@ -746,7 +776,7 @@ a:active {
 }
 
 /* Responsive */
-@media (max-width: 1000px) {
+@media (max-width: 768px) {
   .mw-content-container {
     flex-direction: column;
   }
@@ -754,6 +784,23 @@ a:active {
   .mw-sidebar {
     flex: 0 0 auto;
     width: 100%;
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-toc {
+    margin-bottom: 0.75rem;
+  }
+
+  .sidebar-section {
+    display: inline-block;
+    margin-right: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .sidebar-separator {
+    display: none;
   }
   
   .frontmatter-box {
@@ -777,8 +824,9 @@ a:active {
 }
 
 @media (max-width: 600px) {
-  .toc-container {
-    width: 100%;
+  .sidebar-section {
+    display: block;
+    margin-right: 0;
   }
 
   .mw-logo-text {
