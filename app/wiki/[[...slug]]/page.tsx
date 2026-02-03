@@ -1,6 +1,9 @@
 import { getArticleBySlug } from '@/lib/markdown';
 import FrontMatter from '@/app/components/FrontMatter';
 import TableOfContents from '@/app/components/TableOfContents';
+import WikiSidebar from '@/app/components/WikiSidebar';
+import ArticleHeader from '@/app/components/ArticleHeader';
+import WikiFooter from '@/app/components/WikiFooter';
 
 interface WikiPageProps {
   params: Promise<{
@@ -17,18 +20,11 @@ export default async function WikiPage({ params }: WikiPageProps) {
   if (!article) {
     return (
       <div className="mw-content-container">
-        <aside className="mw-sidebar">
-          <nav>
-            <h3>Navigation</h3>
-            <ul style={{ listStyle: 'none', padding: 0 }}>
-              <li><a href="/">Main Page</a></li>
-            </ul>
-          </nav>
-        </aside>
+        <WikiSidebar />
         <main className="mw-content-wrapper">
           <div className="mw-body">
             <div className="mw-body-content">
-              <h1 className="firstHeading">Page Not Found</h1>
+              <ArticleHeader title="Page Not Found" />
               <div className="mw-parser-output">
                 <p>
                   The page <strong>{slug.join('/')}</strong> does not exist.
@@ -44,20 +40,16 @@ export default async function WikiPage({ params }: WikiPageProps) {
     );
   }
 
+  // Extract categories from frontmatter tags
+  const categories = article.frontMatter.tags || article.frontMatter.categories || [];
+
   return (
     <div className="mw-content-container">
-      <aside className="mw-sidebar">
-        <nav>
-          <h3>Navigation</h3>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            <li><a href="/">Main Page</a></li>
-          </ul>
-        </nav>
-      </aside>
+      <WikiSidebar />
       <main className="mw-content-wrapper">
         <div className="mw-body">
           <div className="mw-body-content">
-            <h1 className="firstHeading">{article.title}</h1>
+            <ArticleHeader title={article.title} />
             
             {/* Frontmatter metadata box */}
             {Object.keys(article.frontMatter).length > 0 && (
@@ -73,6 +65,12 @@ export default async function WikiPage({ params }: WikiPageProps) {
             <div 
               className="mw-parser-output"
               dangerouslySetInnerHTML={{ __html: article.content }}
+            />
+
+            {/* Footer with categories and last edited info */}
+            <WikiFooter 
+              categories={Array.isArray(categories) ? categories : [categories].filter(Boolean)}
+              lastModified={article.frontMatter.date || article.frontMatter.updated}
             />
           </div>
         </div>

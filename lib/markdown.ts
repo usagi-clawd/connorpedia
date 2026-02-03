@@ -46,6 +46,23 @@ function addHeadingIds(markdown: string): string {
   return result.join('\n');
 }
 
+/**
+ * Add [edit] links to section headings (h2 and below)
+ */
+function addEditLinks(html: string): string {
+  // Add edit link after each h2, h3, h4, h5, h6 (but not h1)
+  return html.replace(
+    /<(h[2-6])([^>]*)>(.+?)<\/\1>/gi,
+    (match, tag, attrs, content) => {
+      // Extract the id if it exists
+      const idMatch = attrs.match(/id="([^"]+)"/);
+      const id = idMatch ? idMatch[1] : '';
+      
+      return `<${tag}${attrs}>${content}<span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="#" onclick="event.preventDefault()">edit</a><span class="mw-editsection-bracket">]</span></span></${tag}>`;
+    }
+  );
+}
+
 export async function getArticleBySlug(slug: string[]): Promise<Article | null> {
   try {
     // Convert slug to file path
@@ -77,7 +94,8 @@ export async function getArticleBySlug(slug: string[]): Promise<Article | null> 
       .use(html, { sanitize: false })
       .process(contentWithIds);
     
-    const contentHtml = processedContent.toString();
+    // Add edit links to section headings
+    const contentHtml = addEditLinks(processedContent.toString());
 
     // Extract title from frontmatter or use slug
     const title = data.title || slug[slug.length - 1]
