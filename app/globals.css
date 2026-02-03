@@ -258,6 +258,133 @@ a:active {
   display: none; /* Hide edit sections for now */
 }
 
+/* Wiki Links */
+.wiki-link {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+.wiki-link:visited {
+  color: var(--color-link--visited);
+}
+
+.wiki-link:hover {
+  text-decoration: underline;
+}
+
+.wiki-link-missing {
+  color: #d33;
+}
+
+.wiki-link-missing:visited {
+  color: #a55;
+}
+
+/* Frontmatter Box */
+.frontmatter-box {
+  background-color: var(--background-color-neutral-subtle);
+  border: 1px solid var(--border-color-subtle);
+  padding: 0.75rem;
+  margin: 1rem 0;
+  font-size: var(--font-size-small);
+  float: right;
+  width: 300px;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.frontmatter-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color-base);
+  padding-bottom: 0.25rem;
+}
+
+.frontmatter-table {
+  width: 100%;
+  border: none;
+  margin: 0;
+}
+
+.frontmatter-table th,
+.frontmatter-table td {
+  border: none;
+  padding: 0.25rem 0.5rem;
+  text-align: left;
+  font-size: var(--font-size-small);
+}
+
+.frontmatter-table th {
+  background: none;
+  font-weight: 600;
+  width: 35%;
+  vertical-align: top;
+  color: var(--color-base--subtle);
+}
+
+.frontmatter-table td {
+  width: 65%;
+}
+
+/* Table of Contents */
+.toc-container {
+  background-color: var(--background-color-neutral-subtle);
+  border: 1px solid var(--border-color-subtle);
+  padding: 1rem;
+  margin: 1rem 0 1.5rem 0;
+  font-size: var(--font-size-small);
+  display: inline-block;
+  min-width: 250px;
+}
+
+.toc-title {
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toc-title::before {
+  content: '▼ ';
+  display: inline-block;
+  margin-right: 0.25rem;
+  transition: transform 0.2s;
+}
+
+.toc-container.collapsed .toc-title::before {
+  transform: rotate(-90deg);
+}
+
+.toc-container.collapsed .toc-content {
+  display: none;
+}
+
+.vector-toc-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.vector-toc-list .vector-toc-list {
+  padding-left: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.vector-toc-list-item {
+  margin: 0.35rem 0;
+  line-height: 1.4;
+}
+
+.vector-toc-list-item a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+.vector-toc-list-item a:hover {
+  text-decoration: underline;
+}
+
 /* Responsive */
 @media (max-width: 1000px) {
   .mw-content-container {
@@ -266,6 +393,18 @@ a:active {
   
   .mw-sidebar {
     flex: 0 0 auto;
+    width: 100%;
+  }
+  
+  .frontmatter-box {
+    float: none;
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .toc-container {
     width: 100%;
   }
 }
