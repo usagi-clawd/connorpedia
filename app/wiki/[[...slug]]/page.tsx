@@ -1,5 +1,5 @@
 import { getArticleBySlug } from '@/lib/markdown';
-import FrontMatter from '@/app/components/FrontMatter';
+import InfoBox from '@/app/components/InfoBox';
 import TableOfContents from '@/app/components/TableOfContents';
 import WikiSidebar from '@/app/components/WikiSidebar';
 import ArticleHeader from '@/app/components/ArticleHeader';
@@ -51,9 +51,9 @@ export default async function WikiPage({ params }: WikiPageProps) {
           <div className="mw-body-content">
             <ArticleHeader title={article.title} />
             
-            {/* Frontmatter metadata box */}
+            {/* InfoBox - Wikipedia-style infobox */}
             {Object.keys(article.frontMatter).length > 0 && (
-              <FrontMatter data={article.frontMatter} />
+              <InfoBox data={article.frontMatter} title={article.title} />
             )}
             
             {/* Table of Contents */}

@@ -503,6 +503,89 @@ a:active {
   width: 65%;
 }
 
+/* InfoBox - Wikipedia-style infobox */
+.infobox {
+  background-color: var(--background-color-neutral-subtle);
+  border: 1px solid var(--border-color-subtle);
+  float: right;
+  width: 300px;
+  margin: 0 0 1rem 1rem;
+  font-size: var(--font-size-small);
+  clear: right;
+}
+
+.infobox-image {
+  width: 100%;
+  background-color: var(--background-color-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-color-subtle);
+}
+
+.infobox-image img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.infobox-header {
+  background-color: #3366cc;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-bottom: 1px solid var(--border-color-base);
+}
+
+.infobox-table {
+  width: 100%;
+  border: none;
+  margin: 0;
+}
+
+.infobox-table th,
+.infobox-table td {
+  border: none;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  font-size: var(--font-size-small);
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-color-subtle);
+}
+
+.infobox-table tr:last-child th,
+.infobox-table tr:last-child td {
+  border-bottom: none;
+}
+
+.infobox-table th {
+  background-color: #eaf3ff;
+  font-weight: 600;
+  width: 35%;
+  color: var(--color-base--subtle);
+}
+
+.infobox-table td {
+  width: 65%;
+  background-color: var(--background-color-base);
+}
+
+.infobox-wikilink {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+.infobox-wikilink:visited {
+  color: var(--color-link--visited);
+}
+
+.infobox-wikilink:hover {
+  text-decoration: underline;
+}
+
 /* Table of Contents */
 .toc-container {
   background-color: var(--background-color-neutral-subtle);
@@ -677,6 +760,13 @@ a:active {
     float: none;
     width: 100%;
     margin-left: 0;
+  }
+
+  .infobox {
+    float: none;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .mw-search-input {
