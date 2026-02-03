@@ -503,6 +503,89 @@ a:active {
   width: 65%;
 }
 
+/* InfoBox - Wikipedia-style infobox */
+.infobox {
+  background-color: var(--background-color-neutral-subtle);
+  border: 1px solid var(--border-color-subtle);
+  float: right;
+  width: 300px;
+  margin: 0 0 1rem 1rem;
+  font-size: var(--font-size-small);
+  clear: right;
+}
+
+.infobox-image {
+  width: 100%;
+  background-color: var(--background-color-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-color-subtle);
+}
+
+.infobox-image img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.infobox-header {
+  background-color: #3366cc;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-bottom: 1px solid var(--border-color-base);
+}
+
+.infobox-table {
+  width: 100%;
+  border: none;
+  margin: 0;
+}
+
+.infobox-table th,
+.infobox-table td {
+  border: none;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  font-size: var(--font-size-small);
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-color-subtle);
+}
+
+.infobox-table tr:last-child th,
+.infobox-table tr:last-child td {
+  border-bottom: none;
+}
+
+.infobox-table th {
+  background-color: #eaf3ff;
+  font-weight: 600;
+  width: 35%;
+  color: var(--color-base--subtle);
+}
+
+.infobox-table td {
+  width: 65%;
+  background-color: var(--background-color-base);
+}
+
+.infobox-wikilink {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+.infobox-wikilink:visited {
+  color: var(--color-link--visited);
+}
+
+.infobox-wikilink:hover {
+  text-decoration: underline;
+}
+
 /* Table of Contents */
 .toc-container {
   background-color: var(--background-color-neutral-subtle);
@@ -679,6 +762,13 @@ a:active {
     margin-left: 0;
   }
 
+  .infobox {
+    float: none;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .mw-search-input {
     width: 200px;
   }
@@ -703,5 +793,133 @@ a:active {
 
   .article-tab {
     padding: 0.4rem 0.75rem;
+  }
+}
+
+/* Main Page Styles */
+.mainpage-welcome {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color-base);
+}
+
+.mainpage-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.mainpage-left,
+.mainpage-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mainpage-box {
+  background-color: var(--background-color-base);
+  border: 1px solid var(--border-color-subtle);
+  padding: 0;
+}
+
+.mp-h2 {
+  background-color: var(--background-color-neutral-subtle);
+  padding: 0.5rem 1rem;
+  margin: 0;
+  font-family: var(--font-family-serif);
+  font-weight: normal;
+  border-bottom: 1px solid var(--border-color-base);
+}
+
+.mp-box-content {
+  padding: 1rem;
+}
+
+/* Portal Grid */
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.portal-box {
+  background-color: var(--background-color-neutral-subtle);
+  border: 1px solid var(--border-color-subtle);
+  border-radius: 2px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.portal-box:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.portal-header {
+  background-color: #3366cc;
+  color: white;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color-base);
+}
+
+.portal-header h3 {
+  margin: 0;
+  font-family: var(--font-family-serif);
+  font-size: 1.2rem;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.portal-header a {
+  color: white;
+  text-decoration: none;
+}
+
+.portal-header a:visited {
+  color: white;
+}
+
+.portal-header a:hover {
+  text-decoration: underline;
+}
+
+.portal-icon {
+  font-size: 1.5rem;
+}
+
+.portal-body {
+  padding: 1rem;
+  background-color: var(--background-color-base);
+}
+
+.portal-body p {
+  margin: 0.5rem 0;
+  font-size: var(--font-size-small);
+  color: var(--color-base--subtle);
+}
+
+.portal-count {
+  font-weight: 600;
+  color: var(--color-base);
+  font-size: var(--font-size-small);
+}
+
+/* Responsive Main Page */
+@media (max-width: 900px) {
+  .mainpage-container {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .portal-grid {
+    grid-template-columns: 1fr;
   }
 }
