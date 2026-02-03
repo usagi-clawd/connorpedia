@@ -37,7 +37,7 @@ function addHeadingIds(markdown: string): string {
         .replace(/-+/g, '-')
         .trim();
       
-      result.push(`${level} ${text} {#${id}}`);
+      result.push(`${level} ${text}`);
     } else {
       result.push(line);
     }

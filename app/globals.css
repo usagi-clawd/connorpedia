@@ -593,7 +593,7 @@ a:active {
   border: 1px solid var(--border-color-subtle);
   float: right;
   width: 300px;
-  margin: 0 0 1rem 1rem;
+  margin: 0 0 1rem 1.5rem;
   font-size: var(--font-size-small);
   clear: right;
 }
