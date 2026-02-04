@@ -122,3 +122,93 @@ export function getAllArticles(): string[] {
   // For now, return empty array - can be implemented later
   return [];
 }
+
+export interface ArticleSummary {
+  slug: string[];
+  title: string;
+  description?: string;
+  frontMatter: { [key: string]: any };
+}
+
+/**
+ * Check if a slug path corresponds to a directory (category)
+ */
+export function isCategory(slug: string[]): boolean {
+  try {
+    const relativePath = slug.join('/');
+    const fullPath = path.join(VAULT_PATH, relativePath);
+    
+    return fs.existsSync(fullPath) && fs.statSync(fullPath).isDirectory();
+  } catch (error) {
+    return false;
+  }
+}
+
+/**
+ * Get all articles in a category directory
+ */
+export async function getCategoryArticles(category: string): Promise<ArticleSummary[]> {
+  try {
+    const categoryPath = path.join(VAULT_PATH, category);
+    
+    if (!fs.existsSync(categoryPath) || !fs.statSync(categoryPath).isDirectory()) {
+      return [];
+    }
+
+    const files = fs.readdirSync(categoryPath)
+      .filter(file => file.endsWith('.md'))
+      .sort();
+
+    const articles: ArticleSummary[] = [];
+
+    for (const file of files) {
+      const filePath = path.join(categoryPath, file);
+      const fileContents = fs.readFileSync(filePath, 'utf8');
+      const { data, content } = matter(fileContents);
+
+      // Extract slug from filename (remove .md extension)
+      const articleSlug = file.replace(/\.md$/, '');
+      
+      // Get title from frontmatter or generate from slug
+      const title = data.title || articleSlug
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+
+      // Get description from frontmatter or extract from content
+      let description = data.description || data.excerpt;
+      
+      if (!description) {
+        // Extract first paragraph as description
+        const paragraphs = content
+          .split('\n\n')
+          .filter(p => p.trim() && !p.startsWith('#'))
+          .map(p => p.trim());
+        
+        if (paragraphs.length > 0) {
+          description = paragraphs[0]
+            .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // Remove markdown links
+            .replace(/\[\[([^\]]+)\]\]/g, '$1') // Remove wiki links
+            .replace(/[#*_`]/g, '') // Remove markdown formatting
+            .substring(0, 200);
+          
+          if (content.length > 200) {
+            description += '...';
+          }
+        }
+      }
+
+      articles.push({
+        slug: [category, articleSlug],
+        title,
+        description,
+        frontMatter: data,
+      });
+    }
+
+    return articles;
+  } catch (error) {
+    console.error('Error reading category articles:', error);
+    return [];
+  }
+}
