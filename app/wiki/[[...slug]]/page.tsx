@@ -1,8 +1,9 @@
-import { getArticleBySlug } from '@/lib/markdown';
+import { getArticleBySlug, isCategory, getCategoryArticles } from '@/lib/markdown';
 import InfoBox from '@/app/components/InfoBox';
 import WikiSidebar from '@/app/components/WikiSidebar';
 import ArticleHeader from '@/app/components/ArticleHeader';
 import WikiFooter from '@/app/components/WikiFooter';
+import CategoryIndex from '@/app/components/CategoryIndex';
 import { TocProvider } from '@/app/contexts/TocContext';
 
 interface WikiPageProps {
@@ -14,6 +15,33 @@ interface WikiPageProps {
 export default async function WikiPage({ params }: WikiPageProps) {
   const { slug: slugParam } = await params;
   const slug = slugParam || ['test'];
+  
+  // Check if this is a category (directory) request
+  if (isCategory(slug)) {
+    const category = slug.join('/');
+    const articles = await getCategoryArticles(category);
+    
+    const categoryTitle = slug[slug.length - 1]
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+
+    return (
+      <TocProvider>
+        <div className="mw-content-container">
+          <WikiSidebar />
+          <main className="mw-content-wrapper">
+            <div className="mw-body">
+              <div className="mw-body-content">
+                <ArticleHeader title={`Category: ${categoryTitle}`} />
+                <CategoryIndex category={category} articles={articles} />
+              </div>
+            </div>
+          </main>
+        </div>
+      </TocProvider>
+    );
+  }
   
   const article = await getArticleBySlug(slug);
 
