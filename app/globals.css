@@ -1267,3 +1267,97 @@ a:active {
 .contents-footer li {
   margin-bottom: 0.25rem;
 }
+
+/* Special Pages Styles */
+.mw-special-intro {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  background-color: var(--background-color-neutral-subtle);
+  border-left: 3px solid var(--color-link);
+}
+
+.mw-special-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.mw-special-list-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color-subtle);
+}
+
+.mw-special-list-item:last-child {
+  border-bottom: none;
+}
+
+.mw-special-link {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-link);
+}
+
+.mw-special-description {
+  color: var(--color-base--subtle);
+  font-size: var(--font-size-small);
+  margin-top: 0.25rem;
+}
+
+.backlink-context {
+  color: var(--color-base--subtle);
+  font-size: var(--font-size-small);
+  font-style: italic;
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--border-color-subtle);
+}
+
+.mw-redirect {
+  color: var(--color-link);
+  font-weight: 600;
+}
+
+/* WikiTable for Page Info */
+.wikitable {
+  background-color: var(--background-color-neutral-subtle);
+  border: 1px solid var(--border-color-base);
+  border-collapse: collapse;
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.wikitable th,
+.wikitable td {
+  border: 1px solid var(--border-color-base);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.wikitable th {
+  background-color: var(--background-color-neutral);
+  font-weight: 600;
+  width: 200px;
+  white-space: nowrap;
+}
+
+.wikitable td {
+  background-color: var(--background-color-base);
+}
+
+.wikitable code {
+  background-color: var(--background-color-neutral-subtle);
+  padding: 0.1rem 0.3rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.mw-empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: var(--color-base--subtle);
+  background-color: var(--background-color-neutral-subtle);
+  border: 1px solid var(--border-color-subtle);
+  border-radius: 4px;
+  margin: 1rem 0;
+}

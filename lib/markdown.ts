@@ -130,6 +130,12 @@ export interface ArticleSummary {
   frontMatter: { [key: string]: any };
 }
 
+export interface Backlink {
+  slug: string[];
+  title: string;
+  context?: string;
+}
+
 /**
  * Check if a slug path corresponds to a directory (category)
  */
@@ -141,6 +147,135 @@ export function isCategory(slug: string[]): boolean {
     return fs.existsSync(fullPath) && fs.statSync(fullPath).isDirectory();
   } catch (error) {
     return false;
+  }
+}
+
+/**
+ * Find all articles that link to the specified page (backlinks)
+ */
+export async function getBacklinks(targetSlug: string[]): Promise<Backlink[]> {
+  const backlinks: Backlink[] = [];
+  const targetPath = targetSlug.join('/');
+  const targetTitle = targetSlug[targetSlug.length - 1];
+
+  // Recursively scan vault for .md files
+  function scanDirectory(dir: string): string[] {
+    const files: string[] = [];
+    
+    try {
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        
+        if (entry.isDirectory()) {
+          files.push(...scanDirectory(fullPath));
+        } else if (entry.isFile() && entry.name.endsWith('.md')) {
+          files.push(fullPath);
+        }
+      }
+    } catch (error) {
+      console.error(`Error scanning directory ${dir}:`, error);
+    }
+    
+    return files;
+  }
+
+  const allFiles = scanDirectory(VAULT_PATH);
+
+  for (const filePath of allFiles) {
+    try {
+      const content = fs.readFileSync(filePath, 'utf8');
+      const { data } = matter(content);
+      
+      // Check if this file links to the target
+      // Look for [[targetTitle]] or [[path/to/target]]
+      const wikiLinkRegex = /\[\[([^\]|]+)(?:\|[^\]]+)?\]\]/g;
+      let match;
+      let hasBacklink = false;
+      let context = '';
+      
+      while ((match = wikiLinkRegex.exec(content)) !== null) {
+        const linkTarget = match[1].trim();
+        
+        // Check if the link matches our target (by title or path)
+        if (linkTarget === targetTitle || 
+            linkTarget === targetPath ||
+            linkTarget.endsWith('/' + targetTitle)) {
+          hasBacklink = true;
+          
+          // Extract context around the link
+          const startIdx = Math.max(0, match.index - 50);
+          const endIdx = Math.min(content.length, match.index + match[0].length + 50);
+          context = '...' + content.substring(startIdx, endIdx).trim() + '...';
+          break;
+        }
+      }
+      
+      if (hasBacklink) {
+        // Convert file path to slug
+        const relativePath = path.relative(VAULT_PATH, filePath);
+        const slug = relativePath.replace(/\.md$/, '').split(path.sep);
+        
+        const title = data.title || slug[slug.length - 1]
+          .split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        
+        backlinks.push({
+          slug,
+          title,
+          context,
+        });
+      }
+    } catch (error) {
+      console.error(`Error processing file ${filePath}:`, error);
+    }
+  }
+
+  return backlinks;
+}
+
+/**
+ * Get page information including metadata and statistics
+ */
+export async function getPageInfo(slug: string[]): Promise<{
+  article: Article;
+  wordCount: number;
+  characterCount: number;
+  headingCount: number;
+  linkCount: number;
+  fileSize: number;
+  lastModified: Date;
+} | null> {
+  try {
+    const article = await getArticleBySlug(slug);
+    if (!article) return null;
+
+    const relativePath = slug.join('/');
+    const fullPath = path.join(VAULT_PATH, `${relativePath}.md`);
+    const stats = fs.statSync(fullPath);
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    const { content } = matter(fileContents);
+
+    // Calculate statistics
+    const wordCount = content.split(/\s+/).filter(Boolean).length;
+    const characterCount = content.length;
+    const headingCount = (content.match(/^#{1,6}\s/gm) || []).length;
+    const linkCount = (content.match(/\[\[([^\]]+)\]\]/g) || []).length;
+
+    return {
+      article,
+      wordCount,
+      characterCount,
+      headingCount,
+      linkCount,
+      fileSize: stats.size,
+      lastModified: stats.mtime,
+    };
+  } catch (error) {
+    console.error('Error getting page info:', error);
+    return null;
   }
 }
 

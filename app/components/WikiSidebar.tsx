@@ -3,9 +3,29 @@
 import { useState } from 'react';
 import SidebarTableOfContents from './SidebarTableOfContents';
 
-export default function WikiSidebar() {
+interface WikiSidebarProps {
+  currentSlug?: string[];
+}
+
+export default function WikiSidebar({ currentSlug }: WikiSidebarProps) {
   const [navigationOpen, setNavigationOpen] = useState(true);
   const [toolsOpen, setToolsOpen] = useState(true);
+
+  // Generate tool links based on current page
+  const slugPath = currentSlug ? currentSlug.join('/') : '';
+  const whatLinksHereUrl = currentSlug ? `/wiki/Special:WhatLinksHere/${slugPath}` : '#';
+  const pageInfoUrl = currentSlug ? `/wiki/Special:PageInfo/${slugPath}` : '#';
+
+  const handlePermanentLink = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (typeof window !== 'undefined') {
+      const url = window.location.href;
+      navigator.clipboard.writeText(url).then(() => {
+        // Could show a toast notification here
+        alert('Link copied to clipboard!');
+      });
+    }
+  };
 
   return (
     <aside className="mw-sidebar">
@@ -44,11 +64,10 @@ export default function WikiSidebar() {
         </h3>
         {toolsOpen && (
           <ul className="sidebar-list">
-            <li><a href="#" onClick={(e) => e.preventDefault()}>What links here</a></li>
-            <li><a href="#" onClick={(e) => e.preventDefault()}>Related changes</a></li>
-            <li><a href="#" onClick={(e) => e.preventDefault()}>Special pages</a></li>
-            <li><a href="#" onClick={(e) => e.preventDefault()}>Permanent link</a></li>
-            <li><a href="#" onClick={(e) => e.preventDefault()}>Page information</a></li>
+            <li><a href={whatLinksHereUrl}>What links here</a></li>
+            <li><a href="/wiki/Special:SpecialPages">Special pages</a></li>
+            <li><a href="#" onClick={handlePermanentLink}>Permanent link</a></li>
+            <li><a href={pageInfoUrl}>Page information</a></li>
           </ul>
         )}
       </nav>
