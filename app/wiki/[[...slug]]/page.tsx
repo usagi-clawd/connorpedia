@@ -29,7 +29,7 @@ export default async function WikiPage({ params }: WikiPageProps) {
     return (
       <TocProvider>
         <div className="mw-content-container">
-          <WikiSidebar />
+          <WikiSidebar currentSlug={slug} />
           <main className="mw-content-wrapper">
             <div className="mw-body">
               <div className="mw-body-content">
@@ -49,7 +49,7 @@ export default async function WikiPage({ params }: WikiPageProps) {
     return (
       <TocProvider>
         <div className="mw-content-container">
-          <WikiSidebar />
+          <WikiSidebar currentSlug={slug} />
           <main className="mw-content-wrapper">
             <div className="mw-body">
               <div className="mw-body-content">
@@ -76,7 +76,7 @@ export default async function WikiPage({ params }: WikiPageProps) {
   return (
     <TocProvider toc={article.toc} tocHtml={article.tocHtml}>
       <div className="mw-content-container">
-        <WikiSidebar />
+        <WikiSidebar currentSlug={slug} />
         <main className="mw-content-wrapper">
           <div className="mw-body">
             <div className="mw-body-content">
